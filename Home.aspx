@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Home.aspx.cs" Inherits="AmbulanceSurveillance.DriverList" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Async="true" CodeBehind="Home.aspx.cs" Inherits="AmbulanceSurveillance.DriverList" %>
 
 <!DOCTYPE html>
 
@@ -6,17 +6,7 @@
 <head runat="server">
     <title>Drivers</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            -ms-box-sizing: border-box;
-            box-sizing: border-box;
-        }
-
         body {
-            background: #F0F0F0;
             font-size: 15px;
             color: #666;
             font-family: 'Roboto', sans-serif;
@@ -77,10 +67,12 @@
                     display: inline-block;
                     outline: 0;
                     font-weight: 400;
+                    cursor: pointer;
                 }
 
                 .nav-fostrap li:hover ul.dropdown {
                     display: block;
+                    cursor: pointer;
                 }
 
                 .nav-fostrap li ul.dropdown {
@@ -107,15 +99,18 @@
                             color: #fff;
                             display: block;
                             font-weight: 400;
+                            cursor: pointer;
                         }
 
                         .nav-fostrap li ul.dropdown li:last-child a {
                             border-bottom: none;
+                            cursor: pointer;
                         }
 
                 .nav-fostrap li:hover a {
                     background: #2980B9;
                     color: #fff !important;
+                    cursor: pointer;
                 }
 
                 .nav-fostrap li:first-child:hover a {
@@ -301,6 +296,75 @@
                 left: 0;
                 right: 0;
             }
+
+            td {
+                padding: 15px;
+                text-align: left;
+                vertical-align: middle;
+                font-weight: 300;
+                font-size: 12px;
+                color: #fff;
+                border-bottom: solid 1px rgba(255,255,255,0.1);
+            }
+
+
+            /* demo styles */
+
+            @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,300,700);
+
+            body {
+                background: -webkit-linear-gradient(left, #25c481, #25b7c4);
+                background: linear-gradient(to right, #25c481, #25b7c4);
+                font-family: 'Roboto', sans-serif;
+            }
+
+            section {
+                margin: 50px;
+            }
+
+
+            /* follow me template */
+            .made-with-love {
+                margin-top: 40px;
+                padding: 10px;
+                clear: left;
+                text-align: center;
+                font-size: 10px;
+                font-family: arial;
+                color: #fff;
+            }
+
+                .made-with-love i {
+                    font-style: normal;
+                    color: #F50057;
+                    font-size: 14px;
+                    position: relative;
+                    top: 2px;
+                }
+
+                .made-with-love a {
+                    color: #fff;
+                    text-decoration: none;
+                }
+
+                    .made-with-love a:hover {
+                        text-decoration: underline;
+                    }
+
+
+            /* for custom scrollbar for webkit browser*/
+
+            ::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            ::-webkit-scrollbar-track {
+                -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            }
+
+            ::-webkit-scrollbar-thumb {
+                -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            }
         }
 
         @media only screen and (max-width:1199px) {
@@ -316,17 +380,52 @@
             right: 0;
             left: 0;
         }
+
+        #overlaydiv {
+            width: 100%;
+            position: relative;
+        }
+
+        #home,
+        #list {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #home {
+            z-index: 10;
+        }
+        
     </style>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script>
 
         $(document).ready(function () {
+            document.getElementById("list").style.visibility = "hidden";
             $('.navbar-fostrap').click(function () {
                 $('.nav-fostrap').toggleClass('visible');
                 $('body').toggleClass('cover-bg');
             });
+
+            $('#homeItem').click(function () {
+                document.getElementById("home").style.visibility = "visible";
+                document.getElementById("list").style.visibility = "hidden";
+            });
+
+            $('#listitem').click(function () {
+                document.getElementById("home").style.visibility = "hidden";
+                document.getElementById("list").style.visibility = "visible";
+            });
         });
+
+        $(window).on("load resize ", function () {
+            var scrollWidth = $('.tbl-content').width() - $('.tbl-content table').width();
+            $('.tbl-header').css({ 'padding-right': scrollWidth });
+        }).resize();
     </script>
 </head>
 <body>
@@ -336,8 +435,8 @@
                 <nav>
                     <div class="nav-fostrap">
                         <ul>
-                            <li><a href="">Home</a></li>
-                            <li><a href="">Drivers</a></li>
+                            <li id="homeItem"><a>Home</a></li>
+                            <li id="listitem"><a>Drivers</a></li>
                         </ul>
                     </div>
                     <div class="nav-bg-fostrap">
@@ -345,12 +444,55 @@
                         <a href="" class="title-mobile">Fostrap</a>
                     </div>
                 </nav>
-                <div class='content'>
+                <div id="overlaydiv">
+                    <div id="home" class='content'>
 
-                    <h1 style="color:blue" >Ambulance Surveillance Admin Pannel</h1>
+                        <h1 style="color: blue">Ambulance Surveillance Admin Pannel</h1>
 
+                    </div>
+
+                    <div id="list" style="margin-top:60px">
+                        <asp:Repeater ID="DriverRepeater" runat="server">
+                            <HeaderTemplate>
+                                <div class="tbl-header">
+                                    <table style="table-layout: fixed; width: 100%; text-align: left;">
+                                        <thead>
+                                            <tr>
+                                                <b>
+                                                    <th style="padding:16px; border-bottom: 1px solid #ddd;">Name</th>
+                                                    <th style="padding:16px; border-bottom: 1px solid #ddd;">Number</th>
+                                                    <th style="padding:16px; border-bottom: 1px solid #ddd;">Email</th>
+                                                </b>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </HeaderTemplate>
+                            <ItemTemplate>
+                                <div class="tbl-content">
+                                    <table style="table-layout: fixed; width: 100%; text-align: left">
+                                        <tr>
+                                            <td style="padding:16px; border-bottom: 1px solid #ddd;">
+                                                <%#DataBinder.Eval(Container.DataItem,"name")%>
+                                            </td>
+                                            <td style="padding:16px; border-bottom: 1px solid #ddd;">
+                                                <%#DataBinder.Eval(Container.DataItem,"phone")%>
+                                            </td>
+                                            <td style="padding:16px; border-bottom: 1px solid #ddd;">
+                                                <%#DataBinder.Eval(Container.DataItem,"email")%>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </ItemTemplate>
+
+                            <FooterTemplate>
+                            </FooterTemplate>
+                        </asp:Repeater>
+                    </div>
                 </div>
             </div>
+
         </div>
     </form>
 </body>

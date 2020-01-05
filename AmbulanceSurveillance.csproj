@@ -86,6 +86,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Driver.cs" />
     <Compile Include="DriverList.aspx.cs">
       <DependentUpon>DriverList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
