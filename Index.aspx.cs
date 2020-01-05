@@ -12,7 +12,7 @@ namespace AmbulanceSurveillance
 
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+            Session["login"] = null;
         }
 
         protected void submit_ServerClick(object sender, EventArgs e)

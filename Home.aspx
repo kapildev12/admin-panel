@@ -437,6 +437,7 @@
                         <ul>
                             <li id="homeItem"><a>Home</a></li>
                             <li id="listitem"><a>Drivers</a></li>
+                            <li id="logout"><a href="Index.aspx">Log out</a></li>
                         </ul>
                     </div>
                     <div class="nav-bg-fostrap">
