@@ -40,24 +40,21 @@ namespace AmbulanceSurveillance
 
         private async void getList()
         {
-            List<Driver> drivers = new List<Driver>();
-            FirebaseResponse response = await client.GetTaskAsync("DriverUid");
-
             try
             {
-                Dictionary<String, String> tokens = response.ResultAs<Dictionary<String, String>>();
-                foreach (String token in tokens.Values)
-                {
-                    FirebaseResponse response1 = await client.GetTaskAsync("DriversInformation/" + token);
-                    Driver driver = response1.ResultAs<Driver>();
-                    drivers.Add(driver);
-                }
-                DriverRepeater.DataSource = drivers;
+                FirebaseResponse driversInformation = await client.GetTaskAsync("DriversInformation/");
+                Dictionary<String, Driver> driversDictionary = driversInformation.ResultAs<Dictionary<String, Driver>>();
+                DriverRepeater.DataSource = driversDictionary.Values;
                 DriverRepeater.DataBind();
-            } 
-            catch(Exception ignore)
-            {
 
+                FirebaseResponse ridersInformation = await client.GetTaskAsync("RidersInformation/");
+                Dictionary<String, Driver> ridersDictionary = ridersInformation.ResultAs<Dictionary<String, Driver>>();
+                PatientRepeater.DataSource = ridersDictionary.Values;
+                PatientRepeater.DataBind();
+            }
+            catch (Exception ignore)
+            {
+                //ignore
             }
         }
     }

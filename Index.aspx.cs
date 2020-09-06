@@ -19,7 +19,7 @@ namespace AmbulanceSurveillance
         {
             if (!login.Value.Equals("kapildev12@gmail.com") || !password.Value.Equals("123456"))
             {
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Incorrect Email or Pasword')", true);
+                ClientScript.RegisterStartupScript(this.GetType(), "alertMessage", "alert('Incorrect Email or Pasword')", true);
             }
             else
             {

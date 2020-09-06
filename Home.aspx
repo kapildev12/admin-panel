@@ -406,6 +406,7 @@
 
         $(document).ready(function () {
             document.getElementById("list").style.visibility = "hidden";
+            document.getElementById("patients").style.visibility = "hidden";
             $('.navbar-fostrap').click(function () {
                 $('.nav-fostrap').toggleClass('visible');
                 $('body').toggleClass('cover-bg');
@@ -414,11 +415,19 @@
             $('#homeItem').click(function () {
                 document.getElementById("home").style.visibility = "visible";
                 document.getElementById("list").style.visibility = "hidden";
+                document.getElementById("patients").style.visibility = "hidden";
             });
 
             $('#listitem').click(function () {
                 document.getElementById("home").style.visibility = "hidden";
+                document.getElementById("patients").style.visibility = "hidden";
                 document.getElementById("list").style.visibility = "visible";
+            });
+
+            $('#patientitem').click(function () {
+                document.getElementById("home").style.visibility = "hidden";
+                document.getElementById("list").style.visibility = "hidden";
+                document.getElementById("patients").style.visibility = "visible";
             });
         });
 
@@ -437,6 +446,7 @@
                         <ul>
                             <li id="homeItem"><a>Home</a></li>
                             <li id="listitem"><a>Drivers</a></li>
+                            <li id="patientitem"><a>Patients</a></li>
                             <li id="logout"><a href="Index.aspx">Log out</a></li>
                         </ul>
                     </div>
@@ -451,9 +461,53 @@
                         <h1 style="color: blue">Ambulance Surveillance Admin Pannel</h1>
 
                     </div>
+                    <div id="list">
 
-                    <div id="list" style="margin-top:60px">
+                         <h1 style="color: blue">Drivers</h1>
+
                         <asp:Repeater ID="DriverRepeater" runat="server">
+                            <HeaderTemplate>
+                                <div class="tbl-header">
+                                    <table style="table-layout: fixed; width: 100%; text-align: left;">
+                                        <thead>
+                                            <tr>
+                                                <b>
+                                                    <th style="padding:16px; border-bottom: 1px solid #ddd;">Name</th>
+                                                    <th style="padding:16px; border-bottom: 1px solid #ddd;">Number</th>
+                                                    <th style="padding:16px; border-bottom: 1px solid #ddd;">Email</th>
+                                                </b>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </HeaderTemplate>
+                            <ItemTemplate>
+                                <div class="tbl-content">
+                                    <table style="table-layout: fixed; width: 100%; text-align: left">
+                                        <tr>
+                                            <td style="padding:16px; border-bottom: 1px solid #ddd;">
+                                                <%#DataBinder.Eval(Container.DataItem,"name")%>
+                                            </td>
+                                            <td style="padding:16px; border-bottom: 1px solid #ddd;">
+                                                <%#DataBinder.Eval(Container.DataItem,"phone")%>
+                                            </td>
+                                            <td style="padding:16px; border-bottom: 1px solid #ddd;">
+                                                <%#DataBinder.Eval(Container.DataItem,"email")%>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </ItemTemplate>
+
+                            <FooterTemplate>
+                            </FooterTemplate>
+                        </asp:Repeater>
+                    </div>
+                    <div id="patients" style="margin-top:60px">
+
+                        <h1 style="color: blue">Patients</h1>
+
+                        <asp:Repeater ID="PatientRepeater" runat="server">
                             <HeaderTemplate>
                                 <div class="tbl-header">
                                     <table style="table-layout: fixed; width: 100%; text-align: left;">
